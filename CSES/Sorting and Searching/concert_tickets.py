@@ -9,6 +9,36 @@ from collections import Counter
 from bisect import bisect_right
 from sortedcontainers import SortedSet
 
+def binary_search(arr, v):
+    n = len(arr)
+    L = 0
+    R = n - 1
+    while L <= R:
+        m = int((L + R) / 2)
+        if arr[m] < v:
+            L = m + 1
+        elif arr[m] > v:
+            R = m - 1
+        else:
+            return arr[m]
+    return arr[m]
+
+def concert_tickets(n, m, tickets, c_price):
+    tickets.sort()
+    cnt = Counter(tickets)
+    res = ''
+    for c in c_price:
+        p = binary_search(list(cnt.keys()), c)
+        if cnt[p] == 0 or p > c:
+            res+='-1\n'
+        else:
+            res+= str(p) + '\n'
+            cnt[p]-=1
+            if cnt[p] == 0:
+                cnt.pop(p)
+    return res
+
+
 def concert_tickets(n, m, tickets, c_price):
     tickets.sort()
     cnt = Counter(tickets)
